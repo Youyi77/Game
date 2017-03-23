@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package game;
+package game.Entity;
+
+import game.Map.Tile;
+import game.Map.Map;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Rectangle;
 
 /**
  *
  * @author Yasmeen
  */
-public class Game {
+public class Entity {
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
     
 }
