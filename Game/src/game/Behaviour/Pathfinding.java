@@ -1,5 +1,7 @@
 package game.Behaviour;
 
+import game.Map.Tile;
+
 /**
  *
  * @author Yasmeen
@@ -7,7 +9,7 @@ package game.Behaviour;
 public class Pathfinding {
 
 
-    public Pathfinding(int[][] graph, int source) {
+    public Pathfinding(Tile[][] tiles) {
     }
     
     
