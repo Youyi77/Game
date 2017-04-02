@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.State;
 
 import game.Manager.StateManager;
@@ -10,13 +5,9 @@ import game.Manager.Content;
 import game.Main.GamePanel;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.Shape;
 import java.awt.event.KeyEvent;
-import java.awt.font.FontRenderContext;
-import java.awt.font.TextLayout;
 
 /**
  *
@@ -105,13 +96,13 @@ public class MenuState extends State {
         if (k == KeyEvent.VK_ENTER) {
             select();
         }
-        if (k == KeyEvent.VK_DOWN) {
+        if (k == KeyEvent.VK_UP) {
             currentOption--;
             if (currentOption == -1) {
                 currentOption = options.length - 1;
             }
         }
-        if (k == KeyEvent.VK_UP) {
+        if (k == KeyEvent.VK_DOWN) {
             currentOption++;
             if (currentOption == options.length) {
                 currentOption = 0;

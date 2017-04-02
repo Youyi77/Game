@@ -1,7 +1,11 @@
 package game.Entity;
 
+import game.Map.Map;
+import game.Map.Tile;
+import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
@@ -11,26 +15,28 @@ import java.io.Serializable;
  */
 public class Bullet implements Serializable{
     
-    private static final long serailVersionUID =1L;
-    /*private final long timeBetweenNewBullets = 1;
-    private final long timeOfLastCreatedBullet = 0;*/
-    private int x, y;
+    private static final long serialVersionUID =1L;
+    private int x, y, xdest, ydest;
     private final int speed = 3;
     private final BufferedImage image;
     private double movingXspeed, movingYspeed;
     private final Point direction;
     public boolean isDead;
     private int distance;
+    public Map map;
 
 
     public Bullet(BufferedImage image, int x, int y, Point direction) {
         this.image = image;
         this.x = x;
         this.y = y;
+        this.xdest = x;
+        this.ydest = y;
         this.isDead=false;
         this.direction=direction;
         setDirectionAndSpeed();
         distance =0 ;
+        map =null;
     }
     
 
@@ -50,14 +56,47 @@ private void setDirectionAndSpeed()
     
     public void update()
     {
-        x += movingXspeed;
-        y += movingYspeed;
-        distance ++;
-        //System.out.println((int)x);
-        if (distance > 200){
-            isDead = true;
-            System.out.println("is dead");
+        xdest += movingXspeed;
+        ydest += movingYspeed;
+        
+        if (map != null) {
+            
+            try {
+                Tile tile = map.getTileFromPosition(xdest, ydest);
+                if (!tile.isBlocked()) {
+                    x = xdest;
+                    y = ydest;
+                    distance ++;
+                }
+                else{
+                    isDead = true;
+                }
+            } catch (Exception ex) {
+                System.out.println(ex);
+            }
         }
+        
+        if (isOut()){
+            isDead = true;
+        }
+    }
+    public void setMap(Map map) {
+        this.map = map;
+    }
+    public boolean isOut(){
+        return distance > 200 ;
+    }
+    
+    public boolean intersectsObstacle(Tile t){
+        return getRectangle().intersects(t.getRectangle());
+    }
+    
+    public boolean intersectsBullet(Bullet b){
+        return getRectangle().intersects(b.getRectangle());
+    }
+    
+    public Rectangle getRectangle(){
+        return new Rectangle(x,y,10,12);
     }
 
     public double getX() {
@@ -76,7 +115,8 @@ private void setDirectionAndSpeed()
     public void draw(Graphics2D g)
     {
         update();
-        //g.drawImage(image, (int)x, (int)y, 10, 12, null);
+        //g.drawImage(image, x, y, 10, 12, null);
+        g.setStroke(new BasicStroke(6, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g.drawRect(x, y, 1, 1);
         
     }

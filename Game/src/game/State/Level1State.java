@@ -1,13 +1,19 @@
 package game.State;
 
+import game.Entity.Bullet;
 import game.Manager.StateManager;
 import game.Entity.LazyTank;
 import game.Entity.Player;
+import game.Entity.Tank;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -36,23 +42,53 @@ public class Level1State extends State {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
 
         map = new Map(mapArray);
-        
+
         // Set tanks position
-        Tile playerStartTile = map.getTile(3,0);
-        Tile enemyStartTile = map.getTile(6,9);
-        
+        Tile playerStartTile = map.getTile(3, 0);
+        Tile enemyStartTile = map.getTile(6, 9);
+
         // Initialize tanks
         player = new Player(playerStartTile.getX(), playerStartTile.getY());
         enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
-        
+
         // Initialize map
         player.setMap(map);
         enemy.setMap(map);
+
     }
 
     @Override
     public void update() {
         enemy.move();
+
+        // Check whether a bullet cross another bullet
+        Bullet bullet;
+        Iterator<Bullet> it = player.bullets.iterator();
+        while (it.hasNext()) {
+            bullet = it.next();
+            for (Bullet b : enemy.bullets) {
+                if (bullet.intersectsBullet(b)) {
+                    bullet.isDead = true;
+                    b.isDead = true;
+                }
+            }
+        }
+
+        hitByEnemyBullet(player, enemy);
+        hitByEnemyBullet(enemy, player);
+
+    }
+
+    public void hitByEnemyBullet(Tank current, Tank enemy) {
+        Bullet bullet;
+        Iterator<Bullet> it = enemy.bullets.iterator();
+        while (it.hasNext()) {
+            bullet = it.next();
+            if (current.intersectsBullet(bullet)) {
+                current.isDead = true;
+                bullet.isDead = true;
+            }
+        }
     }
 
     @Override
@@ -60,11 +96,28 @@ public class Level1State extends State {
         map.draw(g);
         player.draw(g);
         enemy.draw(g);
+
+        if (enemy.isDead) {
+            g.drawString("LEVEL 1 COMPLETED", 350, 15);
+            if (enemy.timeAfterDeath == 10) {
+                goToNextLevel();
+            }
+        }
+
+    }
+
+    public void goToNextLevel() {
+        try {
+            Thread.sleep(4000);
+            manager.setState(manager.LEVEL2);
+        } catch (InterruptedException ex) {
+            System.out.println(ex);
+        }
     }
 
     @Override
     public void keyTyped(int k) {
-        
+
     }
 
     @Override
@@ -95,7 +148,7 @@ public class Level1State extends State {
             case KeyEvent.VK_K:
                 player.turnBarrelRight();
                 break;
-             case KeyEvent.VK_SPACE:
+            case KeyEvent.VK_SPACE:
                 player.fire();
                 break;
 

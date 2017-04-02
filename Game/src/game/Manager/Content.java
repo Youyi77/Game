@@ -1,5 +1,6 @@
 package game.Manager;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
@@ -70,6 +71,10 @@ public class Content {
             System.exit(0);
         }
         return null;
+    }
+
+    public static void drawString(Graphics2D g, String paused, int i, int i0) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 

@@ -8,6 +8,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,13 +19,13 @@ import java.util.Iterator;
  */
 public abstract class Tank {
 
-    public int count = 0;
+    public int timeAfterDeath = 0;
     private int x, y, xdest, ydest;
     private double angle;
     private BufferedImage tank, tankUp, tankDown, tankLeft, tankRight, bullet;
     private Bullet b;
-    private ArrayList<Bullet> bullets;
-    public boolean isDead;
+    public ArrayList<Bullet> bullets;
+    public boolean isDead, gotonextlevel;
     private Color color;
     public Map map;
 
@@ -36,9 +37,10 @@ public abstract class Tank {
         setColor(tankColor);
         tank = tankUp;
         angle = 0;
-        b = null;        
+        b = null;
         map = null;
         isDead = false;
+        gotonextlevel = false;
         bullets = new ArrayList();
     }
 
@@ -96,6 +98,10 @@ public abstract class Tank {
         }
     }
 
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
     public void setMap(Map map) {
         this.map = map;
     }
@@ -119,11 +125,11 @@ public abstract class Tank {
         ydest = y;
 
         if (map != null) {
-            
+
             try {
-                
-                Tile tile = map.getTileFromPosition(xdest+45, ydest);
-                if (xdest < GamePanel.WIDTH -50 && !tile.isBlocked()) {
+
+                Tile tile = map.getTileFromPosition(xdest + 45, ydest);
+                if (xdest < GamePanel.WIDTH - 50 && !tile.isBlocked()) {
                     x = xdest;
                 }
                 tank = tankRight;
@@ -135,15 +141,15 @@ public abstract class Tank {
     }
 
     public void moveLeft() {
-        
+
         xdest = x - 10;
         ydest = y;
 
         if (map != null) {
-            
+
             try {
                 Tile tile = map.getTileFromPosition(xdest, ydest);
-                if (0<xdest && !tile.isBlocked()) {
+                if (0 < xdest && !tile.isBlocked()) {
                     x = xdest;
                 }
                 tank = tankLeft;
@@ -155,15 +161,15 @@ public abstract class Tank {
     }
 
     public void moveUp() {
-        
+
         xdest = x;
-        ydest = y-10;
+        ydest = y - 10;
 
         if (map != null) {
-            
+
             try {
                 Tile tile = map.getTileFromPosition(xdest, ydest);
-                if (0<ydest && !tile.isBlocked()) {
+                if (0 < ydest && !tile.isBlocked()) {
                     y = ydest;
                 }
                 tank = tankUp;
@@ -175,15 +181,15 @@ public abstract class Tank {
     }
 
     public void moveDown() {
-        
+
         xdest = x;
-        ydest = y+10;
+        ydest = y + 10;
 
         if (map != null) {
-            
+
             try {
-                Tile tile = map.getTileFromPosition(xdest, ydest+45);
-                if (ydest<GamePanel.HEIGHT - 50 && !tile.isBlocked()) {
+                Tile tile = map.getTileFromPosition(xdest, ydest + 45);
+                if (ydest < GamePanel.HEIGHT - 50 && !tile.isBlocked()) {
                     y = ydest;
                 }
                 tank = tankDown;
@@ -212,35 +218,54 @@ public abstract class Tank {
                 bullet,
                 (int) (x + 45 / 2 + 20 * Math.cos((angle - 15) * 2.0 * Math.PI / 60)),
                 (int) (y + 45 / 2 + 20 * Math.sin((angle - 15) * 2.0 * Math.PI / 60)), p);
+        b.setMap(map);
         bullets.add(b);
 
     }
 
+    public boolean intersectsBullet(Bullet b) {
+        return getRectangle().intersects(b.getRectangle());
+    }
+
+    public boolean intersectsTank(Tank t) {
+        return getRectangle().intersects(t.getRectangle());
+    }
+
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, 45, 45);
+    }
+
     public void draw(Graphics2D g) {
-        update();
 
-        // DRAW TANK
-        g.drawImage(tank, x, y, 45, 45, null);
+        if (!isDead) {
+            update();
 
-        // DRAW BARREL
-        g.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
-        g.setPaint(color);
-        g.drawLine(
-                (int) x + 45 / 2,
-                (int) y + 45 / 2,
-                (int) (x + 45 / 2 + 20 * Math.cos((angle - 15) * 2.0 * Math.PI / 60)),
-                (int) (y + 45 / 2 + 20 * Math.sin((angle - 15) * 2.0 * Math.PI / 60))
-        );
+            // DRAW TANK
+            g.drawImage(tank, x, y, 45, 45, null);
 
-        // DRAW BULLET
-        Bullet bullet;
-        Iterator<Bullet> it = bullets.iterator();
-        while (it.hasNext()) {
-            bullet = it.next();
-            bullet.draw(g);
+            // DRAW BARREL
+            g.setStroke(new BasicStroke(10, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+            g.setPaint(color);
+            g.drawLine(
+                    (int) x + 45 / 2,
+                    (int) y + 45 / 2,
+                    (int) (x + 45 / 2 + 20 * Math.cos((angle - 15) * 2.0 * Math.PI / 60)),
+                    (int) (y + 45 / 2 + 20 * Math.sin((angle - 15) * 2.0 * Math.PI / 60))
+            );
+
+            // DRAW BULLET
+            Bullet bullet;
+            Iterator<Bullet> it = bullets.iterator();
+            while (it.hasNext()) {
+                bullet = it.next();
+                bullet.draw(g);
+            }
+        }
+        else{
+            timeAfterDeath++;
         }
 
-         /* g.setColor(Color.blue);
+        /* g.setColor(Color.blue);
         g.drawLine((int)xBarrel, (int)yBarrel,
         (int) (10 + 70*Math.cos((angle-15) * 2.0 * Math.PI / 60)), 
         (int) (10 + 70*Math.sin((angle-15) * 2.0 * Math.PI / 60)));

@@ -37,7 +37,7 @@ public class StateManager {
         pauseState = new PauseState(this);
 
         states = new State[NUM_STATES];
-        setState(INTRO);
+        setState(LEVEL1);
 
     }
 

@@ -1,5 +1,6 @@
 package game.Map;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -33,6 +34,10 @@ public class Tile {
         this.predecessor = null;
     }
 
+    public Rectangle getRectangle(){
+        return new Rectangle(x,y,tilesize,tilesize);
+    }
+    
     public BufferedImage getImage() {
         return image;
     }

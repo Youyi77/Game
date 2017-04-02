@@ -30,18 +30,18 @@ public class PauseState extends State {
 
     @Override
     public void draw(Graphics2D g) {
-        /*Content.drawString(g, "paused", 40, 30);
+        /*g.drawString( "paused", 40, 30);
 
-        Content.drawString(g, "arrow", 12, 76);
-        Content.drawString(g, "keys", 16, 84);
-        Content.drawString(g, ": move", 52, 80);
+        g.drawString("arrow", 12, 76);
+        g.drawString("keys", 16, 84);
+        g.drawString(": move", 52, 80);
 
-        Content.drawString(g, "space", 12, 96);
-        Content.drawString(g, ": action", 52, 96);
+        g.drawString("space", 12, 96);
+        g.drawString(": action", 52, 96);
 
-        Content.drawString(g, "F1:", 36, 112);
-        Content.drawString(g, "return", 68, 108);
-        Content.drawString(g, "to menu", 68, 116);*/
+        g.drawString("F1:", 36, 112);
+        g.drawString("return", 68, 108);
+        g.drawString("to menu", 68, 116);*/
     }
 
     
