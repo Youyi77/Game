@@ -10,7 +10,7 @@ public class Main {
 
     public static void main(String[] args) {
         
-        JFrame frame = new JFrame("Tank Game");
+        JFrame frame = new JFrame("Games and AI");
         frame.add(new GamePanel());
         frame.setResizable(false);
         frame.setVisible(true);

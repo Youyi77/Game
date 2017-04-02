@@ -1,15 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.State;
 
 import game.Main.GamePanel;
+import game.Manager.StateManager;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.util.Random;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -32,7 +27,10 @@ public class GameOverState extends State {
 
     @Override
     public void draw(Graphics2D g) {
-        
+        g.setColor(Color.BLACK);
+	g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
+	g.setColor(Color.WHITE);	
+	g.drawString("YOU LOSER", 20, 36);
 
     }
 
@@ -42,6 +40,9 @@ public class GameOverState extends State {
 
     @Override
     public void keyPressed(int k) {
+        if (k == KeyEvent.VK_ENTER) {
+            manager.setState(StateManager.MENU);
+        }
     }
 
     @Override

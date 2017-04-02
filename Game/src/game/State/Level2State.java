@@ -1,12 +1,12 @@
 package game.State;
 
+import game.Manager.StateManager;
 import game.Entity.LazyTank;
 import game.Entity.Player;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-
 
 /**
  *
@@ -35,14 +35,17 @@ public class Level2State extends State {
             {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},};
 
         map = new Map(mapArray);
-        
+
         // Set tanks position
-        Tile playerStartTile = map.getTile(3,0);
-        Tile enemyStartTile = map.getTile(6,9);
-        
+        Tile playerStartTile = map.getTile(3, 0);
+        Tile enemyStartTile = map.getTile(6, 9);
+
         // Initialize tanks
         player = new Player(playerStartTile.getX(), playerStartTile.getY());
         enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
+        
+        player.setMap(map);
+        enemy.setMap(map);
     }
 
     @Override
@@ -59,21 +62,23 @@ public class Level2State extends State {
 
     @Override
     public void keyTyped(int k) {
-        
+
     }
 
     @Override
     public void keyPressed(int k) {
+
         switch (k) {
             case KeyEvent.VK_ESCAPE:
                 manager.setPaused(true);
                 break;
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
-                player.moveLeft();
+                    player.moveLeft();
                 break;
             case KeyEvent.VK_RIGHT:
             case KeyEvent.VK_D:
+                
                 player.moveRight();
                 break;
             case KeyEvent.VK_UP:
@@ -90,7 +95,7 @@ public class Level2State extends State {
             case KeyEvent.VK_K:
                 player.turnBarrelRight();
                 break;
-             case KeyEvent.VK_SPACE:
+            case KeyEvent.VK_SPACE:
                 player.fire();
                 break;
 

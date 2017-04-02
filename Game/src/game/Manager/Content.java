@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package game.Image;
+package game.Manager;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
@@ -15,7 +9,7 @@ import javax.imageio.ImageIO;
  */
 public class Content {
 
-    public static BufferedImage MENUBG = load("/Smoke/smokeGrey0.png");
+    public static BufferedImage MENUBG = load("/Backgrounds/menubg1.jpg");
     public static BufferedImage BAR = load("/Smoke/smokeOrange0.png");
 
     public static BufferedImage SMOKE = load("/Smoke/smokeWhite5.png");
@@ -72,7 +66,6 @@ public class Content {
             BufferedImage image = ImageIO.read(Content.class.getResourceAsStream(s));
             return image;
         } catch (Exception e) {
-            e.printStackTrace();
             System.out.println("Error loading graphics.");
             System.exit(0);
         }

@@ -5,7 +5,8 @@
  */
 package game.State;
 
-import game.Image.Content;
+import game.Manager.StateManager;
+import game.Manager.Content;
 import game.Main.GamePanel;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -53,10 +54,6 @@ public class IntroState extends State {
         }
     }
 
-    /**
-     *
-     * @param g
-     */
     @Override
     public void draw(Graphics2D g) {
         g.setColor(Color.WHITE);
@@ -69,10 +66,10 @@ public class IntroState extends State {
     @Override
     public void keyTyped(int k) {
     }
-    
+
     @Override
     public void keyPressed(int k) {
-        if (k==KeyEvent.VK_ENTER) {
+        if (k == KeyEvent.VK_ENTER) {
             manager.setState(StateManager.MENU);
         }
     }

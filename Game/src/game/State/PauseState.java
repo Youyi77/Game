@@ -5,7 +5,8 @@
  */
 package game.State;
 
-import game.Image.Content;
+import game.Manager.StateManager;
+import game.Manager.Content;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 

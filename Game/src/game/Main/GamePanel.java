@@ -1,6 +1,6 @@
 package game.Main;
 
-import game.State.StateManager;
+import game.Manager.StateManager;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

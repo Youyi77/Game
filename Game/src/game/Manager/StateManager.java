@@ -1,10 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package game.State;
+package game.Manager;
 
+import game.State.GameOverState;
+import game.State.IntroState;
+import game.State.Level2State;
+import game.State.MenuState;
+import game.State.PauseState;
+import game.State.Level1State;
+import game.State.Level3State;
+import game.State.State;
 import java.awt.Graphics2D;
 
 /**
@@ -20,11 +23,13 @@ public class StateManager {
     private int currentState;
     private int previousState;
 
-    public static final int NUM_STATES = 4;
+    public static final int NUM_STATES = 6;
     public static final int INTRO = 0;
     public static final int MENU = 1;
-    public static final int PLAY = 2;
-    public static final int GAMEOVER = 3;
+    public static final int LEVEL1 = 2;
+    public static final int LEVEL2 = 3;
+    public static final int LEVEL3 = 4;
+    public static final int GAMEOVER = 5;
 
     public StateManager() {
 
@@ -45,7 +50,7 @@ public class StateManager {
         switch (i) {
 
             case INTRO:
-                states[i] = new Level2State(this);
+                states[i] = new IntroState(this);
                 states[i].init();
                 break;
 
@@ -54,8 +59,18 @@ public class StateManager {
                 states[i].init();
                 break;
 
-            case PLAY:
-                states[i] = new PlayState(this);
+            case LEVEL1:
+                states[i] = new Level1State(this);
+                states[i].init();
+                break;
+
+            case LEVEL2:
+                states[i] = new Level2State(this);
+                states[i].init();
+                break;
+
+            case LEVEL3:
+                states[i] = new Level3State(this);
                 states[i].init();
                 break;
 
@@ -92,13 +107,13 @@ public class StateManager {
 
     public void keyPressed(int k) {
         states[currentState].keyPressed(k);
-        
+
     }
 
     public void keyReleased(int k) {
         states[currentState].keyReleased(k);
     }
-    
+
     public void keyTyped(int k) {
         states[currentState].keyTyped(k);
     }

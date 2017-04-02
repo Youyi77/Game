@@ -1,22 +1,45 @@
 package game.Map;
 
-import game.Image.Content;
+import game.Main.GamePanel;
+import game.Manager.Content;
 import java.awt.Graphics2D;
 
 public class Map {
 
     private final int map[][];
     private final Tile[][] tiles;
+    private final int tilesize;
 
     public Map(int[][] map) {
 
         this.map = map;
         tiles = new Tile[map.length][map[0].length];
+        tilesize = Tile.tilesize;
         loadTiles();
     }
 
-    public Tile getTile(int i, int j) {
-        return tiles[i][j];
+    public Tile getTile(int row, int col) {
+        return tiles[row][col];
+    }
+
+    public Tile getTileFromPosition(int x, int y) throws Exception{
+        int row = 1;
+        int col = 1;
+        
+        for (int i = 0; i < tiles[0].length; i++) {
+            if (i*tilesize <= x && x < i * tilesize+tilesize) {
+                col = i;
+            }
+
+        }
+        for (int j = 0; j < tiles.length; j++) {
+
+             if (j*tilesize <= y && y < j * tilesize+tilesize) {
+                row = j;
+            }
+        }
+
+        return tiles[row][col];
     }
 
     private void loadTiles() {

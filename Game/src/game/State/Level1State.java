@@ -1,5 +1,6 @@
 package game.State;
 
+import game.Manager.StateManager;
 import game.Entity.LazyTank;
 import game.Entity.Player;
 import game.Map.Map;
@@ -12,13 +13,13 @@ import java.awt.event.KeyEvent;
  *
  * @author Yasmeen
  */
-public class PlayState extends State {
+public class Level1State extends State {
 
     private Map map;
     private Player player;
     private LazyTank enemy;
 
-    public PlayState(StateManager manager) {
+    public Level1State(StateManager manager) {
         super(manager);
     }
 
@@ -43,6 +44,10 @@ public class PlayState extends State {
         // Initialize tanks
         player = new Player(playerStartTile.getX(), playerStartTile.getY());
         enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
+        
+        // Initialize map
+        player.setMap(map);
+        enemy.setMap(map);
     }
 
     @Override

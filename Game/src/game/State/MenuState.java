@@ -5,11 +5,18 @@
  */
 package game.State;
 
-import game.Image.Content;
+import game.Manager.StateManager;
+import game.Manager.Content;
 import game.Main.GamePanel;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Shape;
 import java.awt.event.KeyEvent;
+import java.awt.font.FontRenderContext;
+import java.awt.font.TextLayout;
 
 /**
  *
@@ -30,7 +37,7 @@ public class MenuState extends State {
 
     @Override
     public void init() {
-        
+
     }
 
     @Override
@@ -39,38 +46,47 @@ public class MenuState extends State {
 
     @Override
     public void draw(Graphics2D g) {
-        //g.drawImage(background, 0, 0, null);
-        
-        g.setColor(new Color(30,144,112));
-        g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 
+        // SET BACKGROUND
+        g.drawImage(Content.MENUBG, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
+
+        // SET TITLE
         g.setColor(Color.white);
-        //g.setFont(new Font("Arial Black", Font.BOLD, 30));
-        g.drawString("Tank Game", 200, 100);
-       
-        switch(currentOption){
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g.drawString("GET THEM RIGHT", 110, 100);
+
+        // DRAW SMOKE
+        int y = 145;
+        int yScale = 50;
+        int x = 200;
+        int xScale = 20;
+        switch (currentOption) {
             case 0:
-                g.drawImage(Content.SMOKE,180, 125,50,50,  null);
+                g.drawImage(Content.SMOKE, x, y, 50, 50, null);
                 break;
             case 1:
-                g.drawImage(Content.SMOKE,180, 175,50,50,   null);
+                g.drawImage(Content.SMOKE, x, y + yScale, 50, 50, null);
                 break;
             case 2:
-                g.drawImage(Content.SMOKE,180, 225,50,50,   null);
+                g.drawImage(Content.SMOKE, x, y + yScale * 2, 50, 50, null);
                 break;
         }
-        
+
+        // DRAW OPTIONS
         g.setColor(Color.blue);
-        
-        g.drawString(options[0], 200, 150);
-        g.drawString(options[1], 200, 200);
-        g.drawString(options[2], 200, 250);
+        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+        y = 170;
+        g.drawString(options[0], x + xScale, y);
+        g.drawString(options[1], x + xScale, y + yScale);
+        g.drawString(options[2], x + xScale, y + yScale * 2);
+
     }
 
     private void select() {
         if (currentOption == 0) {
-            //manager.setState(StateManager.LEVEL1STATE);
-            manager.setState(StateManager.PLAY);
+            manager.setState(StateManager.LEVEL1);
         }
         if (currentOption == 1) {
             // help
@@ -83,7 +99,7 @@ public class MenuState extends State {
     @Override
     public void keyTyped(int k) {
     }
-    
+
     @Override
     public void keyPressed(int k) {
         if (k == KeyEvent.VK_ENTER) {
