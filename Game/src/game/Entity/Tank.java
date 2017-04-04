@@ -2,6 +2,7 @@ package game.Entity;
 
 import game.Manager.Content;
 import game.Main.GamePanel;
+import game.Manager.Direction;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.BasicStroke;
@@ -19,13 +20,15 @@ import java.util.Iterator;
  */
 public abstract class Tank {
 
+    public String name;
     public int timeAfterDeath = 0;
     private int x, y, xdest, ydest;
     private double angle;
-    private BufferedImage tank, tankUp, tankDown, tankLeft, tankRight, bullet;
+    private BufferedImage tank, bullet;
+    public BufferedImage tankUp, tankDown, tankLeft, tankRight;
     private Bullet b;
     public ArrayList<Bullet> bullets;
-    public boolean isDead, gotonextlevel;
+    public boolean isDead;
     private Color color;
     public Map map;
 
@@ -35,12 +38,10 @@ public abstract class Tank {
         this.xdest = x;
         this.ydest = y;
         setColor(tankColor);
-        tank = tankUp;
-        angle = 0;
+        setDirection(Direction.UP);
         b = null;
         map = null;
         isDead = false;
-        gotonextlevel = false;
         bullets = new ArrayList();
     }
 
@@ -50,6 +51,39 @@ public abstract class Tank {
 
     public int getY() {
         return y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    
+
+    public void setDirection(Direction position) {
+        switch (position) {
+            case UP:
+                tank = tankUp;
+                angle = 0;
+                break;
+            case DOWN:
+                tank = tankDown;
+                angle = 30;
+                break;
+            case LEFT:
+                tank = tankLeft;
+                angle = 45;
+                break;
+            case RIGHT:
+                tank = tankRight;
+                angle= 15;
+                break;
+            default:
+                break;
+        }
     }
 
     private void setColor(String tankColor) {
@@ -107,16 +141,18 @@ public abstract class Tank {
     }
 
     private void update() {
-
-        Bullet bullet;
+        removeDeadBullets();
+    }
+    
+    private void removeDeadBullets(){
+        Bullet currentBullet = null;
         Iterator<Bullet> it = bullets.iterator();
         while (it.hasNext()) {
-            bullet = it.next();
-            if (bullet.isDead) {
+            currentBullet = it.next();
+            if (currentBullet.isDead) {
                 it.remove();
             }
         }
-
     }
 
     public void moveRight() {
@@ -189,7 +225,7 @@ public abstract class Tank {
 
             try {
                 Tile tile = map.getTileFromPosition(xdest, ydest + 45);
-                if (ydest < GamePanel.HEIGHT - 50 && !tile.isBlocked()) {
+                if (ydest < GamePanel.HEIGHT - 40 && !tile.isBlocked()) {
                     y = ydest;
                 }
                 tank = tankDown;
@@ -260,8 +296,7 @@ public abstract class Tank {
                 bullet = it.next();
                 bullet.draw(g);
             }
-        }
-        else{
+        } else {
             timeAfterDeath++;
         }
 

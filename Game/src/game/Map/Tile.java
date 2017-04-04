@@ -10,20 +10,23 @@ import java.awt.image.BufferedImage;
 public class Tile {
 
     public static int tilesize = 50;
+    public final int row, col;
 
     private final BufferedImage image;
     private int x, y;               // top-left of tile
     private int xCenter, yCenter;   // center of tile
     private boolean blocked;
 
-    private double gCost;       // cost of the path from the start tile to itself
-    private double hCost;       // straight-line cost from itself to the end
-    private double fCost;       // estimation of total distance using this tile
+    private int gCost;       // cost of the path from the start tile to itself
+    private int hCost;       // straight-line cost from itself to the end
+    private int fCost;       // estimation of total distance using this tile
     private Tile predecessor;
 
-    public Tile(BufferedImage image, int x, int y, boolean blocked) {
+    public Tile(BufferedImage image, int row, int col, int x, int y, boolean blocked) {
         this.image = image;
         this.blocked = blocked;
+        this.row=row;
+        this.col=col;
         this.x = x;
         this.y = y;
         this.xCenter = (int) (x + tilesize / 2);
@@ -42,6 +45,14 @@ public class Tile {
         return image;
     }
 
+    public int getRow() {
+        return row;
+    }
+    
+    public int getCol() {
+        return col;
+    }
+    
     public int getX() {
         return x;
     }
@@ -62,15 +73,15 @@ public class Tile {
         return yCenter;
     }
 
-    public double getgCost() {
+    public int getgCost() {
         return gCost;
     }
 
-    public double gethCost() {
+    public int gethCost() {
         return hCost;
     }
 
-    public double getfCost() {
+    public int getfCost() {
         return fCost;
     }
 
@@ -98,15 +109,15 @@ public class Tile {
         this.blocked = blocked;
     }
 
-    public void setgCost(double gCost) {
+    public void setgCost(int gCost) {
         this.gCost = gCost;
     }
 
-    public void sethCost(double hCost) {
+    public void sethCost(int hCost) {
         this.hCost = hCost;
     }
 
-    public void setfCost(double fCost) {
+    public void setfCost(int fCost) {
         this.fCost = fCost;
     }
 

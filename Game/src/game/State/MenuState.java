@@ -42,11 +42,12 @@ public class MenuState extends State {
         g.drawImage(Content.MENUBG, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 
         // SET TITLE
-        g.setColor(Color.white);
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g.drawString("GET THEM RIGHT", 110, 100);
+        Graphics2D g2d=(Graphics2D) g.create();
+        g2d.setColor(Color.white);
+        g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.drawString("GET THEM RIGHT", 110, 100);
 
         // DRAW SMOKE
         int y = 145;
@@ -66,12 +67,12 @@ public class MenuState extends State {
         }
 
         // DRAW OPTIONS
-        g.setColor(Color.blue);
-        g.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
+        g2d.setColor(Color.blue);
+        g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 18));
         y = 170;
-        g.drawString(options[0], x + xScale, y);
-        g.drawString(options[1], x + xScale, y + yScale);
-        g.drawString(options[2], x + xScale, y + yScale * 2);
+        g2d.drawString(options[0], x + xScale, y);
+        g2d.drawString(options[1], x + xScale, y + yScale);
+        g2d.drawString(options[2], x + xScale, y + yScale * 2);
 
     }
 

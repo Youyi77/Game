@@ -1,5 +1,8 @@
 package game.Entity;
 
+import game.Map.Tile;
+import java.util.ArrayList;
+
 /**
  *
  * @author Yasmeen
@@ -10,17 +13,18 @@ public class LazyTank extends Tank{
     
     public LazyTank(int x, int y) {
         super(x, y, "BEIGE");
+        this.name="Lazy";
     }
 
     
     public void move(){
         //this.turnBarrelLeft();
         
-        if((p%10)==0){
+        if((p%30)==0){
             this.fire();
         }
         p++;
-        
-        
+  
     }
+    
 }

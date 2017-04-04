@@ -30,7 +30,7 @@ public class GameOverState extends State {
         g.setColor(Color.BLACK);
 	g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 	g.setColor(Color.WHITE);	
-	g.drawString("YOU LOSER", 20, 36);
+	g.drawString("GAME OVER", 20, 36);
 
     }
 

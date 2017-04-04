@@ -1,95 +1,90 @@
 package game.State;
 
-import game.Entity.Bullet;
+import game.Behaviour.Astar;
 import game.Manager.StateManager;
 import game.Entity.LazyTank;
 import game.Entity.Player;
-import game.Entity.Tank;
+import game.Manager.Direction;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Yasmeen
  */
-public class Level1State extends State {
+public class Level1State extends PlayState {
 
-    private Map map;
-    private Player player;
+    
     private LazyTank enemy;
+    private int count;
+    private ArrayList<Tile> path;
 
     public Level1State(StateManager manager) {
         super(manager);
     }
 
+    
+
     @Override
     public void init() {
 
         final int[][] mapArray = new int[][]{
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 3, 3, 3, 0, 0, 0, 0, 0},
-            {1, 1, 3, 0, 0, 0, 0, 0, 0, 0},
-            {1, 1, 4, 0, 0, 0, 0, 0, 0, 0},
-            {1, 1, 3, 0, 0, 0, 0, 0, 0, 0},
-            {1, 1, 3, 4, 4, 0, 0, 0, 0, 0},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
+            {1, 1, 4, 4, 0, 0, 0, 0, 0, 0},
+            {1, 1, 4, 3, 0, 0, 0, 4, 4, 0},
+            {1, 1, 1, 0, 0, 4, 0, 3, 0, 0},
+            {1, 1, 1, 0, 0, 4, 0, 0, 0, 0},
+            {1, 1, 1, 0, 0, 4, 0, 0, 0, 0},
+            {1, 1, 4, 0, 0, 0, 0, 3, 0, 0},
+            {1, 1, 4, 4, 3, 4, 4, 4, 0, 0},};
 
         map = new Map(mapArray);
 
         // Set tanks position
-        Tile playerStartTile = map.getTile(3, 0);
-        Tile enemyStartTile = map.getTile(6, 9);
+        Tile playerStartTile = map.getTile(4, 7);
+        Tile enemyStartTile = map.getTile(4, 9);
 
         // Initialize tanks
         player = new Player(playerStartTile.getX(), playerStartTile.getY());
         enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
+        player.setDirection(Direction.RIGHT);
+        enemy.setDirection(Direction.LEFT);
 
         // Initialize map
         player.setMap(map);
         enemy.setMap(map);
+        
+        Astar pathfinding = new Astar(map);
+        boolean tamere = pathfinding.shortestPath(enemyStartTile, playerStartTile);
+        if(tamere)
+        path = pathfinding.getBestPath();
+        System.out.println(path);
+        this.count=0;
+        
+        
 
     }
 
     @Override
     public void update() {
-        enemy.move();
+        //enemy.move();
 
+        //enemy.setX(path.get(count).getX());
+        //enemy.setY(path.get(count).getY());
+        
+       /* System.out.println(path.get(0));
+        System.out.println(path.get(count).);*/
         // Check whether a bullet cross another bullet
-        Bullet bullet;
-        Iterator<Bullet> it = player.bullets.iterator();
-        while (it.hasNext()) {
-            bullet = it.next();
-            for (Bullet b : enemy.bullets) {
-                if (bullet.intersectsBullet(b)) {
-                    bullet.isDead = true;
-                    b.isDead = true;
-                }
-            }
-        }
+        handleBulletsIntersection(player, enemy);
 
-        hitByEnemyBullet(player, enemy);
-        hitByEnemyBullet(enemy, player);
+        handleTankHitByBullet(player, enemy);
+        handleTankHitByBullet(enemy, player);
+        count++;
 
     }
-
-    public void hitByEnemyBullet(Tank current, Tank enemy) {
-        Bullet bullet;
-        Iterator<Bullet> it = enemy.bullets.iterator();
-        while (it.hasNext()) {
-            bullet = it.next();
-            if (current.intersectsBullet(bullet)) {
-                current.isDead = true;
-                bullet.isDead = true;
-            }
-        }
-    }
+    
+    
 
     @Override
     public void draw(Graphics2D g) {
@@ -100,64 +95,17 @@ public class Level1State extends State {
         if (enemy.isDead) {
             g.drawString("LEVEL 1 COMPLETED", 350, 15);
             if (enemy.timeAfterDeath == 10) {
-                goToNextLevel();
+                goToNextLevel(StateManager.LEVEL2);
+            }
+        }
+        
+        if (player.isDead) {
+            g.drawString("YOU LOSER", 350, 15);
+            if (player.timeAfterDeath == 10) {
+                goToNextLevel(StateManager.GAMEOVER);
             }
         }
 
-    }
-
-    public void goToNextLevel() {
-        try {
-            Thread.sleep(4000);
-            manager.setState(manager.LEVEL2);
-        } catch (InterruptedException ex) {
-            System.out.println(ex);
-        }
-    }
-
-    @Override
-    public void keyTyped(int k) {
-
-    }
-
-    @Override
-    public void keyPressed(int k) {
-        switch (k) {
-            case KeyEvent.VK_ESCAPE:
-                manager.setPaused(true);
-                break;
-            case KeyEvent.VK_LEFT:
-            case KeyEvent.VK_A:
-                player.moveLeft();
-                break;
-            case KeyEvent.VK_RIGHT:
-            case KeyEvent.VK_D:
-                player.moveRight();
-                break;
-            case KeyEvent.VK_UP:
-            case KeyEvent.VK_W:
-                player.moveUp();
-                break;
-            case KeyEvent.VK_DOWN:
-            case KeyEvent.VK_S:
-                player.moveDown();
-                break;
-            case KeyEvent.VK_J:
-                player.turnBarrelLeft();
-                break;
-            case KeyEvent.VK_K:
-                player.turnBarrelRight();
-                break;
-            case KeyEvent.VK_SPACE:
-                player.fire();
-                break;
-
-        }
-    }
-
-    @Override
-    public void keyReleased(int k) {
-
-    }
+    } 
 
 }

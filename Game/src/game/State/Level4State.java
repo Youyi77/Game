@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.State;
 
 import game.Entity.LazyTank;
@@ -17,11 +12,11 @@ import java.awt.Graphics2D;
  *
  * @author Yasmeen
  */
-public class Level3State extends PlayState{
-
+public class Level4State extends PlayState{
+     
     private LazyTank enemy;
 
-    public Level3State(StateManager manager) {
+    public Level4State(StateManager manager) {
         super(manager);
     }
 
@@ -30,13 +25,13 @@ public class Level3State extends PlayState{
     public void init() {
 
         final int[][] mapArray = new int[][]{
-            {0, 0, 0, 0, 0, 0, 0, 0, 2, 2},
-            {0, 0, 0, 0, 0, 0, 0, 0, 2, 2},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 3, 4, 3, 4, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},
-            {2, 2, 0, 0, 0, 0, 0, 0, 2, 2},};
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+            {1, 1, 3, 3, 3, 0, 0, 0, 0, 0},
+            {1, 1, 3, 1, 0, 0, 0, 0, 0, 0},
+            {1, 1, 4, 1, 0, 0, 0, 0, 0, 0},
+            {1, 1, 3, 1, 0, 0, 0, 0, 0, 0},
+            {1, 1, 3, 4, 4, 0, 0, 0, 0, 0},
+            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},};
 
         map = new Map(mapArray);
 
@@ -77,9 +72,9 @@ public class Level3State extends PlayState{
         enemy.draw(g);
 
         if (enemy.isDead) {
-            g.drawString("LEVEL 3 COMPLETED", 350, 15);
+            g.drawString("LEVEL 4 COMPLETED", 350, 15);
             if (enemy.timeAfterDeath == 10) {
-                goToNextLevel(StateManager.LEVEL4);
+                goToNextLevel(StateManager.GAMEOVER);
             }
         }
         
