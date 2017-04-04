@@ -47,7 +47,7 @@ public class Astar {
             for(Tile neighbour : neighbours)
             {
                 if(neighbour.isBlocked() || closelist.contains(neighbour)){
-                    // do nothing
+                    continue;
                 }
                 
                 int cost = current.getgCost() + getDistance(current, neighbour);
@@ -110,7 +110,7 @@ public class Astar {
             for (int x = -1; x < 2; x++) {
                 for (int y = -1; y < 2; y++) {
                     if (x == 0 && y == 0) {
-                        // do nothing
+                        continue;
                     } else if (x == 0 || y == 0) {
                         int row = current.getRow();
                         int col = current.getCol();

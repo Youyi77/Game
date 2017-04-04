@@ -42,7 +42,7 @@ public class Level1State extends PlayState {
         map = new Map(mapArray);
 
         // Set tanks position
-        Tile playerStartTile = map.getTile(4, 7);
+        Tile playerStartTile = map.getTile(3, 0);
         Tile enemyStartTile = map.getTile(4, 9);
 
         // Initialize tanks
@@ -70,9 +70,11 @@ public class Level1State extends PlayState {
     public void update() {
         //enemy.move();
 
-        //enemy.setX(path.get(count).getX());
-        //enemy.setY(path.get(count).getY());
-        
+        if(count>=path.size()){
+        count=0;
+        }
+        enemy.setX(path.get(count).getX());
+        enemy.setY(path.get(count).getY());
        /* System.out.println(path.get(0));
         System.out.println(path.get(count).);*/
         // Check whether a bullet cross another bullet
