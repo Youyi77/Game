@@ -3,6 +3,7 @@ package game.Entity;
 import game.Manager.Content;
 import game.Main.GamePanel;
 import game.Manager.Direction;
+import game.Manager.GameColor;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.BasicStroke;
@@ -21,50 +22,84 @@ import java.util.Iterator;
 public abstract class Tank {
 
     public String name;
-    public int timeAfterDeath = 0;
-    private int x, y, xdest, ydest;
-    private double angle;
-    private BufferedImage tank, bullet;
-    public BufferedImage tankUp, tankDown, tankLeft, tankRight;
-    private Bullet b;
+    public Map map;
+    protected Tile position;
+    protected int x, y, xdest, ydest;
+    protected Color color;
+    protected int speed;
+    protected double angle;
+    public Direction direction;
+    protected BufferedImage tank, tankUp, tankDown, tankLeft, tankRight;
     public ArrayList<Bullet> bullets;
     public boolean isDead;
-    private Color color;
-    public Map map;
+    public int timeAfterDeath = 0;
 
-    public Tank(int x, int y, String tankColor) {
-        this.x = x;
-        this.y = y;
+    
+    public Tank(Map map, Tile position, Direction direction, GameColor gcolor) {
+        this.map = map;
+        this.position = position;
+        this.x = position.getX();
+        this.y = position.getY();
         this.xdest = x;
         this.ydest = y;
-        setColor(tankColor);
-        setDirection(Direction.UP);
-        b = null;
-        map = null;
-        isDead = false;
-        bullets = new ArrayList();
+        this.speed = 1;
+        this.direction = direction;
+        this.isDead = false;
+        this.bullets = new ArrayList();
+
+        setColor(gcolor);
+        setDirection();
     }
 
-    public int getX() {
-        return x;
+    /*
+    * Store all images of the tank with a defined color
+     */
+    private void setColor(GameColor gcolor) {
+        switch (gcolor) {
+            case BLUE:
+                tankUp = Content.TANK_BLUE_UP;
+                tankRight = Content.TANK_BLUE_RIGHT;
+                tankLeft = Content.TANK_BLUE_LEFT;
+                tankDown = Content.TANK_BLUE_DOWN;
+                color = Color.BLUE;
+                break;
+            case BEIGE:
+                tankUp = Content.TANK_BEIGE_UP;
+                tankRight = Content.TANK_BEIGE_RIGHT;
+                tankLeft = Content.TANK_BEIGE_LEFT;
+                tankDown = Content.TANK_BEIGE_DOWN;
+                color = Color.LIGHT_GRAY;
+                break;
+            case BLACK:
+                tankUp = Content.TANK_BLACK_UP;
+                tankRight = Content.TANK_BLACK_RIGHT;
+                tankLeft = Content.TANK_BLACK_LEFT;
+                tankDown = Content.TANK_BLACK_DOWN;
+                color = Color.BLACK;
+                break;
+            case RED:
+                tankUp = Content.TANK_RED_UP;
+                tankRight = Content.TANK_RED_RIGHT;
+                tankLeft = Content.TANK_RED_LEFT;
+                tankDown = Content.TANK_RED_DOWN;
+                color = Color.RED;
+                break;
+            case GREEN:
+                tankUp = Content.TANK_RED_UP;
+                tankRight = Content.TANK_RED_RIGHT;
+                tankLeft = Content.TANK_RED_LEFT;
+                tankDown = Content.TANK_RED_DOWN;
+                color = Color.GREEN;
+                break;
+
+        }
     }
 
-    public int getY() {
-        return y;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-    
-    
-
-    public void setDirection(Direction position) {
-        switch (position) {
+    /**
+     * Set tank image
+     */
+    public void setDirection() {
+        switch (direction) {
             case UP:
                 tank = tankUp;
                 angle = 0;
@@ -79,72 +114,29 @@ public abstract class Tank {
                 break;
             case RIGHT:
                 tank = tankRight;
-                angle= 15;
+                angle = 15;
                 break;
             default:
                 break;
         }
     }
 
-    private void setColor(String tankColor) {
-        switch (tankColor) {
-            case "BLUE":
-                tankUp = Content.TANK_BLUE_UP;
-                tankRight = Content.TANK_BLUE_RIGHT;
-                tankLeft = Content.TANK_BLUE_LEFT;
-                tankDown = Content.TANK_BLUE_DOWN;
-                bullet = Content.BULLET_BLUE;
-                color = Color.BLUE;
-                break;
-            case "BEIGE":
-                tankUp = Content.TANK_BEIGE_UP;
-                tankRight = Content.TANK_BEIGE_RIGHT;
-                tankLeft = Content.TANK_BEIGE_LEFT;
-                tankDown = Content.TANK_BEIGE_DOWN;
-                bullet = Content.BULLET_BEIGE;
-                color = Color.LIGHT_GRAY;
-                break;
-            case "BLACK":
-                tankUp = Content.TANK_BLACK_UP;
-                tankRight = Content.TANK_BLACK_RIGHT;
-                tankLeft = Content.TANK_BLACK_LEFT;
-                tankDown = Content.TANK_BLACK_DOWN;
-                bullet = Content.BULLET_BLACK;
-                color = Color.BLACK;
-                break;
-            case "RED":
-                tankUp = Content.TANK_RED_UP;
-                tankRight = Content.TANK_RED_RIGHT;
-                tankLeft = Content.TANK_RED_LEFT;
-                tankDown = Content.TANK_RED_DOWN;
-                bullet = Content.BULLET_RED;
-                color = Color.RED;
-                break;
-            case "GREEN":
-                tankUp = Content.TANK_RED_UP;
-                tankRight = Content.TANK_RED_RIGHT;
-                tankLeft = Content.TANK_RED_LEFT;
-                tankDown = Content.TANK_RED_DOWN;
-                bullet = Content.BULLET_RED;
-                color = Color.GREEN;
-                break;
-
-        }
-    }
-
-    public ArrayList<Bullet> getBullets() {
-        return bullets;
-    }
-
-    public void setMap(Map map) {
-        this.map = map;
-    }
-
+    /*
+    * Update tile position and remove dead bullets
+     */
     private void update() {
+        try {
+            this.position = map.getTileFromPosition(x, y);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
         removeDeadBullets();
     }
-    
-    private void removeDeadBullets(){
+
+    /*
+    * Check if there are dead bullets and remove them from the list
+     */
+    private void removeDeadBullets() {
         Bullet currentBullet = null;
         Iterator<Bullet> it = bullets.iterator();
         while (it.hasNext()) {
@@ -155,9 +147,12 @@ public abstract class Tank {
         }
     }
 
+    /**
+     * Move to the right at speed defined
+     */
     public void moveRight() {
 
-        xdest = x + 10;
+        xdest = x + speed;
         ydest = y;
 
         if (map != null) {
@@ -176,9 +171,12 @@ public abstract class Tank {
 
     }
 
+    /**
+     * Move to the left at speed defined
+     */
     public void moveLeft() {
 
-        xdest = x - 10;
+        xdest = x - speed;
         ydest = y;
 
         if (map != null) {
@@ -196,10 +194,13 @@ public abstract class Tank {
 
     }
 
+    /**
+     * Move up at speed defined
+     */
     public void moveUp() {
 
         xdest = x;
-        ydest = y - 10;
+        ydest = y - speed;
 
         if (map != null) {
 
@@ -216,10 +217,13 @@ public abstract class Tank {
 
     }
 
+    /**
+     * Move down at speed defined
+     */
     public void moveDown() {
 
         xdest = x;
-        ydest = y + 10;
+        ydest = y + speed;
 
         if (map != null) {
 
@@ -236,14 +240,23 @@ public abstract class Tank {
 
     }
 
+    /**
+     * Turn barrel to the left
+     */
     public void turnBarrelLeft() {
         angle -= 1;
     }
 
+    /**
+     * Turn barrel to the right
+     */
     public void turnBarrelRight() {
         angle += 1;
     }
 
+    /**
+     * Create a bullet and put it in bullets list
+     */
     public void fire() {
 
         Point p = new Point(
@@ -251,22 +264,55 @@ public abstract class Tank {
                 (int) (y + 45 / 2 + 30 * Math.sin((angle - 15) * 2.0 * Math.PI / 60)));
 
         Bullet b = new Bullet(
-                bullet,
                 (int) (x + 45 / 2 + 20 * Math.cos((angle - 15) * 2.0 * Math.PI / 60)),
                 (int) (y + 45 / 2 + 20 * Math.sin((angle - 15) * 2.0 * Math.PI / 60)), p);
-        b.setMap(map);
+        b.map = map;
         bullets.add(b);
 
     }
 
-    public boolean intersectsBullet(Bullet b) {
-        return getRectangle().intersects(b.getRectangle());
+    /**
+     * Move to the next tile and avoid obstacles
+     *
+     * @param nextTile
+     */
+    public void moveToNextTile(Tile nextTile) {
+        if (nextTile != null) {
+            int nextX = nextTile.getX();
+            int nextY = nextTile.getY();
+
+            if (x < nextX) {
+                moveRight();
+            }
+            if (nextX < x) {
+                moveLeft();
+            }
+            if (y < nextY) {
+                moveDown();
+            }
+            if (nextY < y) {
+                moveUp();
+            }
+        }
     }
 
-    public boolean intersectsTank(Tank t) {
-        return getRectangle().intersects(t.getRectangle());
+    /**
+     * @return true if a bullet hit another bullet
+     */
+    public boolean intersectsBullet(Bullet other) {
+        return getRectangle().intersects(other.getRectangle());
     }
 
+    /**
+     * @return true if a tank hit another tank
+     */
+    public boolean intersectsTank(Tank other) {
+        return getRectangle().intersects(other.getRectangle());
+    }
+
+    /**
+     * @return rectangle representing tank in the drawing
+     */
     public Rectangle getRectangle() {
         return new Rectangle(x, y, 45, 45);
     }
@@ -298,13 +344,8 @@ public abstract class Tank {
             }
         } else {
             timeAfterDeath++;
+            bullets.removeAll(bullets);
         }
 
-        /* g.setColor(Color.blue);
-        g.drawLine((int)xBarrel, (int)yBarrel,
-        (int) (10 + 70*Math.cos((angle-15) * 2.0 * Math.PI / 60)), 
-        (int) (10 + 70*Math.sin((angle-15) * 2.0 * Math.PI / 60)));
-        g.drawRect(i,j, 1, 1);
-        g.setColor(Color.red);*/
     }
 }

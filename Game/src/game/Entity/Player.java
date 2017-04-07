@@ -1,22 +1,21 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.Entity;
 
+import game.Manager.Direction;
+import game.Manager.GameColor;
+import game.Map.Map;
+import game.Map.Tile;
 
 /**
  *
  * @author Yasmeen
  */
-public class Player extends Tank{
+public class Player extends Tank {
 
-    public Player(int x, int y) {
-        super(x, y, "BLUE");
-        this.name="player";
+    public Player(Map map, Tile position, Direction direction) {
+        super(map, position, direction, GameColor.BLUE);
+        this.name = "Player";
+        this.speed = 10;
     }
-
-
+    
 
 }

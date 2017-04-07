@@ -1,4 +1,4 @@
-package game.Behaviour;
+package game.Pathfinding;
 
 import game.Map.Map;
 import game.Map.Tile;
@@ -25,46 +25,45 @@ public class Astar {
     public boolean shortestPath(Tile start, Tile end) {
         ArrayList<Tile> openlist = new ArrayList();
         ArrayList<Tile> closelist = new ArrayList();
-
         openlist.add(start);
+        
         while (!openlist.isEmpty()) {
             Tile current = openlist.get(0);
             System.out.println(current.getRow());
             System.out.println(current.getCol());
             System.out.println("**********");
             if (current == null) {
-                System.out.println("error");
+                System.out.println("Error");
                 return false;
             }
             openlist.remove(current);
             if (current == end) {
-                getPath(start,current);
+                getPath(start, current);
                 return true;
             }
 
             // NEIGHBORS
             ArrayList<Tile> neighbours = getNeighbours(current);
-            for(Tile neighbour : neighbours)
-            {
-                if(neighbour.isBlocked() || closelist.contains(neighbour)){
+            for (Tile neighbour : neighbours) {
+                if (neighbour.isBlocked() || closelist.contains(neighbour)) {
                     continue;
                 }
-                
+
                 int cost = current.getgCost() + getDistance(current, neighbour);
-                
-                if(cost<neighbour.getgCost() || !openlist.contains(neighbour)){
+
+                if (cost < neighbour.getgCost() || !openlist.contains(neighbour)) {
                     neighbour.setgCost(cost);
-                    neighbour.sethCost(getDistance(neighbour,end));
-                    neighbour.setfCost(neighbour.getgCost()+neighbour.gethCost());
-                    
+                    neighbour.sethCost(getDistance(neighbour, end));
+                    neighbour.setfCost(neighbour.getgCost() + neighbour.gethCost());
+
                     neighbour.setPredecessor(current);
-                    
-                    if(!openlist.contains(neighbour)){
+
+                    if (!openlist.contains(neighbour)) {
                         openlist.add(neighbour);
                     }
                 }
             }
-            if(!openlist.contains(current)){
+            if (!openlist.contains(current)) {
                 closelist.add(current);
             }
         }
@@ -79,6 +78,9 @@ public class Astar {
 
     }
 
+    /**
+     * Create a path between two tiles
+     */
     public void getPath(Tile start, Tile end) {
         ArrayList<Tile> result = new ArrayList();
         Tile current = end;
@@ -95,6 +97,9 @@ public class Astar {
         this.bestPath = result;
     }
 
+    /**
+     * @return a reversed list
+     */
     public ArrayList<Tile> reverseList(ArrayList<Tile> initialList) {
         ArrayList<Tile> reversedList = new ArrayList();
         int lastTileIndex = initialList.size() - 1;
@@ -104,14 +109,20 @@ public class Astar {
         return reversedList;
     }
 
+    /**
+     * @return list of neighbours of current tile
+     */
     public ArrayList<Tile> getNeighbours(Tile current) {
         ArrayList<Tile> neighbours = new ArrayList();
         if (current != null) {
             for (int x = -1; x < 2; x++) {
                 for (int y = -1; y < 2; y++) {
+                    // if neighbour is current tile, continue
                     if (x == 0 && y == 0) {
                         continue;
-                    } else if (x == 0 || y == 0) {
+                    }
+                    // check four neighbours
+                    else if (x == 0 || y == 0) {
                         int row = current.getRow();
                         int col = current.getCol();
                         Tile neighbour = map.getTile(row + x, col + y);

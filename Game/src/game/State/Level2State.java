@@ -1,8 +1,9 @@
 package game.State;
 
 import game.Manager.StateManager;
-import game.Entity.LazyTank;
 import game.Entity.Player;
+import game.Entity.RollingTank;
+import game.Manager.Direction;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.Graphics2D;
@@ -13,7 +14,7 @@ import java.awt.Graphics2D;
  */
 public class Level2State extends PlayState {
 
-    private LazyTank enemy;
+    private RollingTank enemy;
 
     public Level2State(StateManager manager) {
         super(manager);
@@ -35,19 +36,17 @@ public class Level2State extends PlayState {
 
         // Set tanks position
         Tile playerStartTile = map.getTile(3, 0);
-        Tile enemyStartTile = map.getTile(6, 9);
+        Tile enemyStartTile = map.getTile(3, 9);
 
         // Initialize tanks
-        player = new Player(playerStartTile.getX(), playerStartTile.getY());
-        enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
-        
-        player.setMap(map);
-        enemy.setMap(map);
+        player = new Player(map,playerStartTile,Direction.RIGHT);
+        enemy = new RollingTank(map,enemyStartTile, Direction.LEFT,player);
+
     }
 
     @Override
     public void update() {
-        enemy.move();
+        enemy.setAction();
 
         // Check whether a bullet cross another bullet
         handleBulletsIntersection(player, enemy);
@@ -57,6 +56,7 @@ public class Level2State extends PlayState {
 
     }
 
+    @Override
     public void draw(Graphics2D g) {
         map.draw(g);
         player.draw(g);

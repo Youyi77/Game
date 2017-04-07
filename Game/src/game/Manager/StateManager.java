@@ -7,7 +7,6 @@ import game.State.MenuState;
 import game.State.PauseState;
 import game.State.Level1State;
 import game.State.Level3State;
-import game.State.Level4State;
 import game.State.State;
 import java.awt.Graphics2D;
 
@@ -24,14 +23,13 @@ public class StateManager {
     private int currentState;
     private int previousState;
 
-    public static final int NUM_STATES = 7;
+    public static final int NUM_STATES = 6;
     public static final int INTRO = 0;
     public static final int MENU = 1;
     public static final int LEVEL1 = 2;
     public static final int LEVEL2 = 3;
     public static final int LEVEL3 = 4;
-    public static final int LEVEL4 = 5;
-    public static final int GAMEOVER = 6;
+    public static final int GAMEOVER = 5;
 
     public StateManager() {
 
@@ -73,11 +71,6 @@ public class StateManager {
 
             case LEVEL3:
                 states[i] = new Level3State(this);
-                states[i].init();
-                break;
-                
-            case LEVEL4:
-                states[i] = new Level4State(this);
                 states[i].init();
                 break;
 

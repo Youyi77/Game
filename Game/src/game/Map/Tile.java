@@ -25,8 +25,8 @@ public class Tile {
     public Tile(BufferedImage image, int row, int col, int x, int y, boolean blocked) {
         this.image = image;
         this.blocked = blocked;
-        this.row=row;
-        this.col=col;
+        this.row = row;
+        this.col = col;
         this.x = x;
         this.y = y;
         this.xCenter = (int) (x + tilesize / 2);
@@ -37,10 +37,13 @@ public class Tile {
         this.predecessor = null;
     }
 
-    public Rectangle getRectangle(){
-        return new Rectangle(x,y,tilesize,tilesize);
+    /**
+     * @return a rectangle representing tile in the drawing
+     */
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, tilesize, tilesize);
     }
-    
+
     public BufferedImage getImage() {
         return image;
     }
@@ -48,11 +51,11 @@ public class Tile {
     public int getRow() {
         return row;
     }
-    
+
     public int getCol() {
         return col;
     }
-    
+
     public int getX() {
         return x;
     }
@@ -124,7 +127,5 @@ public class Tile {
     public void setPredecessor(Tile predecessor) {
         this.predecessor = predecessor;
     }
-    
-    
 
 }

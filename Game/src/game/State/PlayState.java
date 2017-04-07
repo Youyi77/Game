@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.State;
 
 import game.Entity.Bullet;
@@ -26,12 +21,15 @@ public abstract class PlayState extends State{
         super(manager);
     }
     
-    public void handleBulletsIntersection(Tank current, Tank opposite){
+    /**
+     * If a bullet hit another bullet, the two bullets die
+     */
+    public void handleBulletsIntersection(Tank current, Tank opponent){
         Bullet bullet;
         Iterator<Bullet> it = current.bullets.iterator();
         while (it.hasNext()) {
             bullet = it.next();
-            for (Bullet b : opposite.bullets) {
+            for (Bullet b : opponent.bullets) {
                 if (bullet.intersectsBullet(b)) {
                     bullet.isDead = true;
                     b.isDead = true;
@@ -40,9 +38,12 @@ public abstract class PlayState extends State{
         }
     }
 
-    public void handleTankHitByBullet(Tank current, Tank opposite) {
+    /**
+     * If oppenent bullet hit current tank, current tank die
+     */
+    public void handleTankHitByBullet(Tank current, Tank opponent) {
         Bullet bullet;
-        Iterator<Bullet> it = opposite.bullets.iterator();
+        Iterator<Bullet> it = opponent.bullets.iterator();
         while (it.hasNext()) {
             bullet = it.next();
             if (current.intersectsBullet(bullet)) {
@@ -52,6 +53,9 @@ public abstract class PlayState extends State{
         }
     }
     
+    /**
+     * Wait 3 seconds and go to the next level
+     */
     public void goToNextLevel(int level) {
         try {
             Thread.sleep(3000);
@@ -66,11 +70,14 @@ public abstract class PlayState extends State{
 
     }
 
+    /**
+     * Set action for the player
+     */
     @Override
     public void keyPressed(int k) {
         switch (k) {
             case KeyEvent.VK_ESCAPE:
-                manager.setPaused(true);
+                //manager.setPaused(true);
                 break;
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
@@ -97,7 +104,6 @@ public abstract class PlayState extends State{
             case KeyEvent.VK_SPACE:
                 player.fire();
                 break;
-
         }
     }
 

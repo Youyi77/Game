@@ -15,7 +15,7 @@ import javax.swing.JPanel;
  *
  * @author trifissy
  */
-public class GamePanel extends JPanel implements Runnable, KeyListener, ActionListener {
+public class GamePanel extends JPanel implements Runnable, KeyListener {
 
     // Dimensions
     public static final int WIDTH = 500;
@@ -35,11 +35,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
     public GamePanel() {
         super();
         setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-        //addKeyListener(this);
         setFocusable(true);
         requestFocus();
     }
 
+    @Override
     public void addNotify() {
         super.addNotify();
         if (thread == null) {
@@ -82,9 +82,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
 
             try {
                 Thread.sleep(wait);
-            } catch (Exception e) {
-                e.printStackTrace();
-                
+            } catch (Exception ex) {
+                System.out.println(ex);
             }
 
         }
@@ -106,21 +105,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener, ActionLi
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
-
-    }
-
-    @Override
     public void keyTyped(KeyEvent ke) {
         stateManager.keyTyped(ke.getKeyCode());
     }
 
     @Override
     public void keyPressed(KeyEvent ke) {
-        if(ke.getKeyCode()==KeyEvent.VK_SPACE)
-        System.out.println(ke.getKeyCode());
         stateManager.keyPressed(ke.getKeyCode());
-        
     }
 
     @Override

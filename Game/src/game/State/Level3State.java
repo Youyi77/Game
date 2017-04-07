@@ -5,7 +5,7 @@
  */
 package game.State;
 
-import game.Entity.LazyTank;
+import game.Entity.CrazyTank;
 import game.Entity.Player;
 import game.Manager.Direction;
 import game.Manager.StateManager;
@@ -19,7 +19,7 @@ import java.awt.Graphics2D;
  */
 public class Level3State extends PlayState{
 
-    private LazyTank enemy;
+    private CrazyTank enemy;
 
     public Level3State(StateManager manager) {
         super(manager);
@@ -45,20 +45,16 @@ public class Level3State extends PlayState{
         Tile enemyStartTile = map.getTile(6, 9);
 
         // Initialize tanks
-        player = new Player(playerStartTile.getX(), playerStartTile.getY());
-        enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
-        player.setDirection(Direction.RIGHT);
-        enemy.setDirection(Direction.LEFT);
-
-        // Initialize map
-        player.setMap(map);
-        enemy.setMap(map);
-
+        player = new Player(map,playerStartTile,Direction.RIGHT);
+        enemy = new CrazyTank(map,enemyStartTile, Direction.LEFT,player);
+        
     }
 
     @Override
     public void update() {
-        enemy.move();
+        
+        enemy.setAction();
+        enemy.updateTarget(player);
 
         // Check whether a bullet cross another bullet
         handleBulletsIntersection(player, enemy);
@@ -79,7 +75,7 @@ public class Level3State extends PlayState{
         if (enemy.isDead) {
             g.drawString("LEVEL 3 COMPLETED", 350, 15);
             if (enemy.timeAfterDeath == 10) {
-                goToNextLevel(StateManager.LEVEL4);
+                goToNextLevel(StateManager.GAMEOVER);
             }
         }
         

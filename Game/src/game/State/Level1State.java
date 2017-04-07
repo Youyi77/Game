@@ -1,6 +1,5 @@
 package game.State;
 
-import game.Behaviour.Astar;
 import game.Manager.StateManager;
 import game.Entity.LazyTank;
 import game.Entity.Player;
@@ -8,7 +7,6 @@ import game.Manager.Direction;
 import game.Map.Map;
 import game.Map.Tile;
 import java.awt.Graphics2D;
-import java.util.ArrayList;
 
 /**
  *
@@ -16,24 +14,21 @@ import java.util.ArrayList;
  */
 public class Level1State extends PlayState {
 
-    
-    private LazyTank enemy;
-    private int count;
-    private ArrayList<Tile> path;
+    private LazyTank enemy1;
+    private LazyTank enemy2;
 
     public Level1State(StateManager manager) {
         super(manager);
     }
 
-    
-
     @Override
     public void init() {
 
+        // Create map
         final int[][] mapArray = new int[][]{
-            {1, 1, 4, 4, 0, 0, 0, 0, 0, 0},
-            {1, 1, 4, 3, 0, 0, 0, 4, 4, 0},
-            {1, 1, 1, 0, 0, 4, 0, 3, 0, 0},
+            {1, 1, 4, 4, 0, 0, 0, 0, 4, 4},
+            {1, 1, 4, 0, 0, 0, 0, 0, 0, 4},
+            {1, 1, 1, 0, 0, 4, 0, 0, 0, 0},
             {1, 1, 1, 0, 0, 4, 0, 0, 0, 0},
             {1, 1, 1, 0, 0, 4, 0, 0, 0, 0},
             {1, 1, 4, 0, 0, 0, 0, 3, 0, 0},
@@ -43,71 +38,60 @@ public class Level1State extends PlayState {
 
         // Set tanks position
         Tile playerStartTile = map.getTile(3, 0);
-        Tile enemyStartTile = map.getTile(4, 9);
+        Tile enemy1StartTile = map.getTile(0, 5);
+        Tile enemy2StartTile = map.getTile(6, 9);
 
         // Initialize tanks
-        player = new Player(playerStartTile.getX(), playerStartTile.getY());
-        enemy = new LazyTank(enemyStartTile.getX(), enemyStartTile.getY());
-        player.setDirection(Direction.RIGHT);
-        enemy.setDirection(Direction.LEFT);
-
-        // Initialize map
-        player.setMap(map);
-        enemy.setMap(map);
-        
-        Astar pathfinding = new Astar(map);
-        boolean tamere = pathfinding.shortestPath(enemyStartTile, playerStartTile);
-        if(tamere)
-        path = pathfinding.getBestPath();
-        System.out.println(path);
-        this.count=0;
-        
-        
+        player = new Player(map, playerStartTile, Direction.RIGHT);
+        enemy1 = new LazyTank(map, enemy1StartTile, Direction.DOWN, player);
+        enemy2 = new LazyTank(map, enemy2StartTile, Direction.UP, player);
 
     }
 
     @Override
     public void update() {
-        //enemy.move();
 
-        if(count>=path.size()){
-        count=0;
-        }
-        enemy.setX(path.get(count).getX());
-        enemy.setY(path.get(count).getY());
-       /* System.out.println(path.get(0));
-        System.out.println(path.get(count).);*/
+        enemy1.setAction();
+        enemy1.updateTarget(player);
+
+        enemy2.setAction();
+        enemy2.updateTarget(player);
+
         // Check whether a bullet cross another bullet
-        handleBulletsIntersection(player, enemy);
+        handleBulletsIntersection(player, enemy1);
+        handleBulletsIntersection(player, enemy2);
 
-        handleTankHitByBullet(player, enemy);
-        handleTankHitByBullet(enemy, player);
-        count++;
+        handleTankHitByBullet(player, enemy1);
+        handleTankHitByBullet(enemy1, player);
+
+        handleTankHitByBullet(player, enemy2);
+        handleTankHitByBullet(enemy2, player);
 
     }
-    
-    
 
     @Override
     public void draw(Graphics2D g) {
         map.draw(g);
         player.draw(g);
-        enemy.draw(g);
+        enemy1.draw(g);
+        enemy2.draw(g);
 
-        if (enemy.isDead) {
+        // If player destroy all anemies, go to the next level
+        if (enemy1.isDead && enemy2.isDead) {
             g.drawString("LEVEL 1 COMPLETED", 350, 15);
-            if (enemy.timeAfterDeath == 10) {
+            if (enemy2.timeAfterDeath > 10 && enemy1.timeAfterDeath > 10) {
                 goToNextLevel(StateManager.LEVEL2);
             }
         }
-        
+
+        // If player is dead, game is over
         if (player.isDead) {
-            g.drawString("YOU LOSER", 350, 15);
+            g.drawString("YOU LOSE", 350, 15);
             if (player.timeAfterDeath == 10) {
                 goToNextLevel(StateManager.GAMEOVER);
             }
         }
 
-    } 
+    }
 
 }

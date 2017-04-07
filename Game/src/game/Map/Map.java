@@ -17,6 +17,9 @@ public class Map {
         loadTiles();
     }
 
+    /**
+     * @return a tile in the map using row and column
+     */
     public Tile getTile(int row, int col) {
         if (row < 0 || row >= tiles.length || col < 0 || col >= tiles[0].length) {
             return null;
@@ -24,6 +27,9 @@ public class Map {
         return tiles[row][col];
     }
 
+    /**
+     * @return a tile in the map using tank coordinates
+     */
     public Tile getTileFromPosition(int x, int y) throws Exception {
         int row = 1;
         int col = 1;
@@ -44,6 +50,9 @@ public class Map {
         return tiles[row][col];
     }
 
+    /**
+     * Initialise tiles list
+     */
     private void loadTiles() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
@@ -68,13 +77,20 @@ public class Map {
         }
     }
 
+    /**
+     * Draw map
+     */
     public void draw(Graphics2D g) {
 
         for (Tile[] tile : tiles) {
             for (int j = 0; j < tiles[0].length; j++) {
+
+                // Put grass behind tree tile
                 if (tile[j].isBlocked()) {
                     g.drawImage(Content.GRASS, tile[j].getX(), tile[j].getY(), Tile.tilesize, Tile.tilesize, null);
                 }
+
+                // Draw tiles
                 g.drawImage(tile[j].getImage(), tile[j].getX(), tile[j].getY(), Tile.tilesize, Tile.tilesize, null);
             }
         }
