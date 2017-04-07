@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
  */
 public class Content {
 
-    public static BufferedImage INTRO = load("/Text/intro.png");
+    public static BufferedImage INTRO = load("/Text/intro.PNG");
     public static BufferedImage MENUBG = load("/Backgrounds/menubg1.jpg");
     public static BufferedImage SMOKE = load("/Smoke/smokeWhite5.png");
 
@@ -61,7 +61,9 @@ public class Content {
             BufferedImage image = ImageIO.read(Content.class.getResourceAsStream(s));
             return image;
         } catch (Exception ex) {
-            System.out.println("Error loading graphics.");
+            System.out.println(ex);
+            System.out.println(s);
+            System.out.println(Content.class.getResourceAsStream(s));
             System.exit(0);
         }
         return null;
