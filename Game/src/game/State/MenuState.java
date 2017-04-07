@@ -81,7 +81,7 @@ public class MenuState extends State {
             manager.setState(StateManager.LEVEL1);
         }
         if (currentOption == 1) {
-            // help
+            manager.setState(StateManager.HELP);
         }
         if (currentOption == 2) {
             System.exit(0);

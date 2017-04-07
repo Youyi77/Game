@@ -73,7 +73,8 @@ public class Level3State extends PlayState{
         if(enemy.path != null){
             Graphics2D g2d =(Graphics2D) g.create();
             for(Tile tile : enemy.path){
-                g2d.setColor(Color.red);
+                g2d.setStroke(new BasicStroke(1));
+                g2d.setColor(Color.LIGHT_GRAY);
                 g2d.draw(tile.getRectangle());
             }
             g2d.dispose();

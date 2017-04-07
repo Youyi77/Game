@@ -1,6 +1,7 @@
 package game.Manager;
 
 import game.State.GameOverState;
+import game.State.HelpState;
 import game.State.IntroState;
 import game.State.Level2State;
 import game.State.MenuState;
@@ -23,13 +24,14 @@ public class StateManager {
     private int currentState;
     private int previousState;
 
-    public static final int NUM_STATES = 6;
+    public static final int NUM_STATES = 7;
     public static final int INTRO = 0;
     public static final int MENU = 1;
-    public static final int LEVEL1 = 2;
-    public static final int LEVEL2 = 3;
-    public static final int LEVEL3 = 4;
-    public static final int GAMEOVER = 5;
+    public static final int HELP = 2;
+    public static final int LEVEL1 = 3;
+    public static final int LEVEL2 = 4;
+    public static final int LEVEL3 = 5;
+    public static final int GAMEOVER = 6;
 
     public StateManager() {
 
@@ -37,7 +39,7 @@ public class StateManager {
         pauseState = new PauseState(this);
 
         states = new State[NUM_STATES];
-        setState(INTRO);
+        setState(MENU);
 
     }
 
@@ -56,6 +58,11 @@ public class StateManager {
 
             case MENU:
                 states[i] = new MenuState(this);
+                states[i].init();
+                break;
+                
+            case HELP:
+                states[i] = new HelpState(this);
                 states[i].init();
                 break;
 

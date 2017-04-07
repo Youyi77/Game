@@ -31,8 +31,7 @@ public class GameOverState extends State {
 	g.fillRect(0, 0, GamePanel.WIDTH, GamePanel.HEIGHT);
 	g.setColor(Color.WHITE);	
 	g.drawString("GAME OVER", 20, 36);
-        g.drawString("Press Enter to get to the menu.", 20, 100);
-
+        g.drawString("Press Enter to return to menu.", 20, 100);
     }
 
     @Override

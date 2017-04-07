@@ -77,7 +77,10 @@ public abstract class PlayState extends State{
     public void keyPressed(int k) {
         switch (k) {
             case KeyEvent.VK_ESCAPE:
-                //manager.setPaused(true);
+                manager.setPaused(true);
+                break;
+            case KeyEvent.VK_F1:
+                manager.setPaused(false);
                 break;
             case KeyEvent.VK_LEFT:
             case KeyEvent.VK_A:
