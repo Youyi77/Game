@@ -4,7 +4,7 @@ import game.Manager.StateManager;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public abstract class State{
     

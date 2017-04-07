@@ -9,7 +9,7 @@ import game.Map.Tile;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class RollingTank extends Tank implements AI {
 

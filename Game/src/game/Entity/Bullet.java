@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class Bullet implements Serializable {
 

@@ -17,7 +17,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public abstract class Tank {
 
@@ -164,6 +164,7 @@ public abstract class Tank {
                     x = xdest;
                 }
                 tank = tankRight;
+                direction = Direction.RIGHT;
             } catch (Exception ex) {
                 System.out.println(ex);
             }
@@ -187,6 +188,7 @@ public abstract class Tank {
                     x = xdest;
                 }
                 tank = tankLeft;
+                direction = Direction.LEFT;
             } catch (Exception ex) {
                 System.out.println(ex);
             }
@@ -210,6 +212,7 @@ public abstract class Tank {
                     y = ydest;
                 }
                 tank = tankUp;
+                direction = Direction.UP;
             } catch (Exception ex) {
                 System.out.println(ex);
             }
@@ -233,6 +236,7 @@ public abstract class Tank {
                     y = ydest;
                 }
                 tank = tankDown;
+                direction = Direction.DOWN;
             } catch (Exception ex) {
                 System.out.println(ex);
             }

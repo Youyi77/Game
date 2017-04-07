@@ -10,7 +10,7 @@ import java.awt.Graphics2D;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class Level2State extends PlayState {
 

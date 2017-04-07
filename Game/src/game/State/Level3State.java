@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package game.State;
 
 import game.Entity.CrazyTank;
@@ -11,11 +6,13 @@ import game.Manager.Direction;
 import game.Manager.StateManager;
 import game.Map.Map;
 import game.Map.Tile;
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class Level3State extends PlayState{
 
@@ -71,6 +68,17 @@ public class Level3State extends PlayState{
         map.draw(g);
         player.draw(g);
         enemy.draw(g);
+        
+        // Draw enemy path
+        if(enemy.path != null){
+            Graphics2D g2d =(Graphics2D) g.create();
+            for(Tile tile : enemy.path){
+                g2d.setColor(Color.red);
+                g2d.draw(tile.getRectangle());
+            }
+            g2d.dispose();
+        }
+        
 
         if (enemy.isDead) {
             g.drawString("LEVEL 3 COMPLETED", 350, 15);

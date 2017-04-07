@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public abstract class PlayState extends State{
     

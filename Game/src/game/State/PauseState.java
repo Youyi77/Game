@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class PauseState extends State {
 

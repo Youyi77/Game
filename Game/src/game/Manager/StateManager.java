@@ -12,7 +12,7 @@ import java.awt.Graphics2D;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class StateManager {
 
@@ -37,7 +37,7 @@ public class StateManager {
         pauseState = new PauseState(this);
 
         states = new State[NUM_STATES];
-        setState(LEVEL1);
+        setState(LEVEL3);
 
     }
 

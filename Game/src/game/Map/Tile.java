@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class Tile {
 

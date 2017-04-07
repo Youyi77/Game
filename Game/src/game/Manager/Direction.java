@@ -2,7 +2,7 @@ package game.Manager;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public enum Direction {
     UP, DOWN, LEFT, RIGHT;

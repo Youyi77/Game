@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class MenuState extends State {
 
@@ -42,7 +42,7 @@ public class MenuState extends State {
         g.drawImage(Content.MENUBG, 0, 0, GamePanel.WIDTH, GamePanel.HEIGHT, null);
 
         // SET TITLE
-        Graphics2D g2d=(Graphics2D) g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.setColor(Color.white);
         g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

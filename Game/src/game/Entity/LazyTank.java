@@ -9,7 +9,7 @@ import game.Map.Tile;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class LazyTank extends Tank implements AI {
 

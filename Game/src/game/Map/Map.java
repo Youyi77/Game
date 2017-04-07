@@ -3,6 +3,10 @@ package game.Map;
 import game.Manager.Content;
 import java.awt.Graphics2D;
 
+/**
+ *
+ * @author Yasmeen Trifiss
+ */
 public class Map {
 
     private final int map[][];

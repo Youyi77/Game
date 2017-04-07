@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author trifissy
+ * @author Yasmeen Trifiss
  */
 public class Astar {
 

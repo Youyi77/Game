@@ -5,7 +5,7 @@ import javax.imageio.ImageIO;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class Content {
 

@@ -4,7 +4,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author trifissy
+ * @author Yasmeen Trifiss
  */
 public class Main {
 

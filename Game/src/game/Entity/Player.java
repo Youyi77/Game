@@ -7,7 +7,7 @@ import game.Map.Tile;
 
 /**
  *
- * @author Yasmeen
+ * @author Yasmeen Trifiss
  */
 public class Player extends Tank {
 
